@@ -3,7 +3,7 @@ from bank_account import BankAccount
 is_running = True
 return_to_menu = True
 account = ''
-
+bank = list()
 menu = '''
 Please Choose an option:
 1. Create Account
@@ -19,10 +19,23 @@ def instatiate_account(full_name, account_number, balance, account_type):
         account_type = 'savings'    
     if(account_number == ''):
         account = BankAccount(full_name, account_type, balance=balance)
-        return account
     else:
         account = BankAccount(full_name, account_type, account_number, balance)
-        return account
+
+    bank.append(account.account_number)
+    print(f"You new account number is: {account.account_number}")
+    return bank
+
+def find_account():
+    is_valid = True
+    while(is_valid == False):
+        print('What is the account number?')
+        user_input = input('-> ')
+        try:
+            user_input = int(user_input)
+        except ValueError:
+            is_valid = False
+        
 
 while(is_running):
     print('Welcome to the bank')
@@ -44,7 +57,7 @@ while(is_running):
             print('Is this a (1)checkings or (2)savings account? (Defaults to Savings)')
             account_type = input('-> ')
 
-            account = instatiate_account(full_name=full_name, account_number=account_number, balance=balance, account_type=account_type)
+            instatiate_account(full_name=full_name, account_number=account_number, balance=balance, account_type=account_type)
         case '2':
             if(isinstance(account, BankAccount)):
                 account.print_statement()
