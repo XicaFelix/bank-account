@@ -22,23 +22,26 @@ def instatiate_account(full_name, account_number, balance, account_type):
     else:
         account = BankAccount(full_name, account_type, account_number, balance)
 
-    bank.append(account.account_number)
+    bank.append(account)
     print(f"You new account number is: {account.account_number}")
+    print('bank', bank)
     return bank
 
-def find_account():
-    is_valid = True
-    while(is_valid == False):
+def find_account(bank):
+    is_valid = False
+    print('bank', bank)
+    while not is_valid:
         print('What is the account number?')
         user_input = input('-> ')
-        try:
-            user_input = int(user_input)
-        except ValueError:
-            is_valid = False
-        
+        for account in bank:
+            if account.account_number == user_input:
+                is_valid = True
+                return account
+            break
+        print("Account not found. Please try again.")
 
+print('Welcome to the bank')
 while(is_running):
-    print('Welcome to the bank')
     print(menu)
     user_action = input('->')
     match user_action:
@@ -59,35 +62,47 @@ while(is_running):
 
             instatiate_account(full_name=full_name, account_number=account_number, balance=balance, account_type=account_type)
         case '2':
-            if(isinstance(account, BankAccount)):
-                account.print_statement()
+            if(len(bank) > 0):
+                account = find_account(bank)
+                if(account != ''):
+                    account.print_statement()
 
-                print('Would you like to conduct another transaction? Y/N')
-                is_running = True if input('-> ').lower() == 'y' else False
+                    print('Would you like to conduct another transaction? Y/N')
+                    is_running = True if input('-> ').lower() == 'y' else False
+                else:
+                    print('No account found, please try again')
 
             else:
                 print('Whoops! You don\'t have an account.\n Please make an account before attempting this action')    
         case '3':
-            if(isinstance(account, BankAccount)):
-                print('How much would you like to deposit?')
-                deposit = int(input('-> '))
-                
-                account.deposit(deposit)
-
-                print('Would you like to conduct another transaction? Y/N')
-                is_running = True if input('-> ').lower() == 'y' else False
-            else:
-                print('Whoops! You don\'t have an account.\n Please make an account before attempting this action')
-        case '4':
-                if(isinstance(account, BankAccount)):
-                    print('How much would you like to withdraw?')
-                    withdrawl = int(input('-> '))
-
-                    account.withdraw(withdrawl)
+            if(len(bank) > 0):
+                account = find_account(bank)
+                if(account != ''):
+                    account.print_statement()
+                    print('How much would you like to deposit?')
+                    deposit = int(input('-> '))
+                    
+                    account.deposit(deposit)
 
                     print('Would you like to conduct another transaction? Y/N')
                     is_running = True if input('-> ').lower() == 'y' else False
+                else:
+                    print('No account found, please try again')
+            else:
+                print('Whoops! You don\'t have an account.\n Please make an account before attempting this action')
+        case '4':
+                if(len(bank) > 0):
+                    account = find_account(bank)
+                    if(account != ''):
+                        print('How much would you like to withdraw?')
+                        withdrawl = int(input('-> '))
 
+                        account.withdraw(withdrawl)
+
+                        print('Would you like to conduct another transaction? Y/N')
+                        is_running = True if input('-> ').lower() == 'y' else False
+                    else:
+                        print('No account found, please try again')
                 else:
                     print('Whoops! You don\'t have an account.\n Please make an account before attempting this action')
         case _:
