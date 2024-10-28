@@ -35,7 +35,6 @@ def find_account(bank):
             if account.account_number == user_input:
                 is_valid = True
                 return account
-            break
         print("Account not found. Please try again.")
 
 print('Welcome to the bank')
