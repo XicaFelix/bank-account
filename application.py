@@ -24,12 +24,10 @@ def instatiate_account(full_name, account_number, balance, account_type):
 
     bank.append(account)
     print(f"You new account number is: {account.account_number}")
-    print('bank', bank)
     return bank
 
 def find_account(bank):
     is_valid = False
-    print('bank', bank)
     while not is_valid:
         print('What is the account number?')
         user_input = input('-> ')
